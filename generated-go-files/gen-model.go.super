@@ -1,0 +1,32 @@
+package testgofiles
+
+import "log"
+
+// type Model struct {
+// 	ID, Name, CreatedAt, UpdatedAt, Username, PasswordHash string
+// 	Status       int16
+// 	Qualities    []string
+// }
+
+type Model struct {
+	ID		string	// RIGHT
+	Name		string
+	CreatedAt	string
+	UpdatedAt	string
+	Status		int8
+	Username	string
+	PasswordHash	string
+	Qualities	[]string
+	params		[]structParams
+}
+
+func (m *Model) Save(withValidata bool) error {
+	log.Println("This is Save model method")
+	return nil
+}
+
+// This is test comment
+func (m *Model) Validate() (bool, error) {
+	log.Println("This is Validate model method")
+	return false, nil
+}
