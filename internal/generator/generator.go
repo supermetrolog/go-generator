@@ -32,6 +32,7 @@ func (gen *generator) Run() {
 	}
 	// funcGenerator := functype.New()
 	// genTypeGenerator := gentype.New()
+	// walker.RegisterHandler(structure.New(), function.New())
 	walker.RegisterHandler(structure.New())
 
 	fset, node := walker.Run()

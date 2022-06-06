@@ -8,7 +8,8 @@ import (
 )
 
 type parser struct {
-	structure structure
+	structure       structure
+	structureNative []*ast.StructType
 }
 
 func New() *parser {
@@ -21,6 +22,7 @@ func (p *parser) Run(node *ast.File, currentNode ast.Node, fset *token.FileSet) 
 	if !ok {
 		return false
 	}
+	ast.Print(fset, node)
 
 	for _, spec := range gen.Specs {
 
@@ -38,7 +40,7 @@ func (p *parser) Run(node *ast.File, currentNode ast.Node, fset *token.FileSet) 
 
 func (p *parser) StructHandler(typeSpec *ast.TypeSpec, structure *ast.StructType) {
 	log.Println("STRUCTURE: ", typeSpec.Name.Name)
-
+	p.structureNative = append(p.structureNative, structure)
 	p.structure.name = typeSpec.Name.Name
 
 	for _, field := range structure.Fields.List {
@@ -48,8 +50,41 @@ func (p *parser) StructHandler(typeSpec *ast.TypeSpec, structure *ast.StructType
 			log.Println(err)
 		}
 	}
-
-	log.Println(p)
+	// var ident []*ast.Ident
+	// ident = append(ident, &ast.Ident{Name: "fuckVariable", NamePos: structure.Pos()})
+	// newField := &ast.Field{Names: ident}
+	// structure.Fields.List = append(structure.Fields.List, newField)
+	newField := &ast.Field{
+		Names: []*ast.Ident{ast.NewIdent("fuckVariable")},
+		Type:  ast.NewIdent("string"),
+		Tag:   &ast.BasicLit{Kind: token.STRING, Value: "`json:\"fuck\"`"},
+		Comment: &ast.CommentGroup{List: []*ast.Comment{{
+			Slash: 35,
+			Text:  "// FUCK YOU",
+		}}},
+	}
+	newField2 := &ast.Field{
+		Names: []*ast.Ident{ast.NewIdent("array")},
+		Type: &ast.ArrayType{
+			Elt: ast.NewIdent("string"),
+		},
+		Tag: &ast.BasicLit{Kind: token.STRING, Value: "`json:\"array\"`"},
+		Comment: &ast.CommentGroup{List: []*ast.Comment{{
+			Slash: 35,
+			Text:  "// ARRAY SUKA",
+		}}},
+	}
+	newField3 := &ast.Field{
+		Names: []*ast.Ident{ast.NewIdent("ID")},
+		Type:  ast.NewIdent("string"),
+		Tag:   &ast.BasicLit{Kind: token.STRING, Value: "`json:\"fuck\"`"},
+		Comment: &ast.CommentGroup{List: []*ast.Comment{{
+			Slash: 35,
+			Text:  "// AGAIN",
+		}}},
+	}
+	structure.Fields.List = append(structure.Fields.List, newField, newField2, newField3)
+	log.Println("Native structure: ", p.structureNative)
 }
 
 func (p *parser) FieldHandler(fieldAST *ast.Field) []*field {

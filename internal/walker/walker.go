@@ -32,8 +32,10 @@ func (walker *walker) Run() (*token.FileSet, *ast.File) {
 	return walker.fset, walker.Node
 }
 
-func (walker *walker) RegisterHandler(handler Handler) {
-	walker.handlers = append(walker.handlers, handler)
+func (walker *walker) RegisterHandler(handlers ...Handler) {
+	for _, handler := range handlers {
+		walker.handlers = append(walker.handlers, handler)
+	}
 }
 
 func (walker *walker) traversalAST() {
@@ -46,6 +48,3 @@ func (walker *walker) traversalAST() {
 	})
 }
 
-// func modelFuncGenerate() func(node *ast.File, currentNode ast.Node, fset *token.FileSet) {
-
-// }

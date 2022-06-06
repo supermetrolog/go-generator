@@ -3,14 +3,8 @@ package testgofiles
 import "log"
 
 
-// type Model struct {
-// 	ID, Name, CreatedAt, UpdatedAt, Username, PasswordHash string
-// 	Status       int16
-// 	Qualities    []string
-// }
-
 type Model struct {
-	ID           string // RIGHT
+	ID           string `json:"id" bson:"_id"` // RIGHT
 	Name         string
 	CreatedAt    string
 	UpdatedAt    string

@@ -1,4 +1,4 @@
-package functype
+package function
 
 import (
 	"go/ast"
